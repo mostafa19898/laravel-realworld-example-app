@@ -23,23 +23,21 @@ class ArticleRevisionController extends Controller
 
     public function index(Article $article)
     {    
-        $this->authorize('viewRevisions', $article); 
+         $this->authorize('viewRevisions', $article);
 
         $revisions = $this->revisionService->getByArticle($article);
-
         return new RevisionCollection($revisions);
     }
 
 
     public function show(Article $article, ArticleRevision $revision)
     {
-        $this->authorize('viewRevisions', $article); 
+        $this->authorize('viewRevisions', $article);
 
         $revision = $this->revisionService->getRevision($article, $revision);
         if (! $revision) {
             return response()->json(['message' => 'Revision not found'], 404);
         }
-
         return new RevisionResource($revision);
     }
 
@@ -48,8 +46,7 @@ class ArticleRevisionController extends Controller
     public function  revert(Article $article, ArticleRevision $revision)
     {  
       
-        $this->authorize('viewRevisions', $article);
-        
+        $this->authorize('revert', $article);
         try {
             $article = $this->revisionService->revert($article, $revision);
             return response()->json([

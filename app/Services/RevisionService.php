@@ -7,9 +7,7 @@ use App\Models\ArticleRevision;
 class  RevisionService {
 
    public function getByArticle(Article $article){
-
-    return ArticleRevision::with('article')->where('article_id', $article->id)->get();
-
+     return ArticleRevision::with(['article', 'user'])->where('article_id', $article->id)->get();
    }
 
 
@@ -28,12 +26,11 @@ class  RevisionService {
             throw new \Exception("Revision does not belong to article.");
         }
 
-        $article->update([
-            'title'   => $revision->title,
-            'content' => $revision->content,
-        ]);
-
+       $article->update([
+      'title'       => $revision->title,
+      'description' => $revision->description,
+      'body'        => $revision->body,
+     ]);
         return $article;
     }
-
 }
